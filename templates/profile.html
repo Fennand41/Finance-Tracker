@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Особистий кабінет</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo"> <span class="blue">F</span>inRadar </div>
+        <div class="nav-buttons">
+            <a href="{{ url_for('logout') }}" class="logout-btn">Вийти</a>
+            <a href="/" class="profile-btn">На головну</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Особистий кабінет</h1>
+
+        <div class="profile-card">
+            <h2 class="section-title">Інформація про акаунт</h2>
+
+            <!-- Аватар с плюсиком -->
+            <div class="avatar-container" id="avatar-container">
+                <img src="{{ avatar_url }}" alt="Аватар" class="avatar" id="avatar-image">
+                <div class="avatar-overlay" id="avatar-overlay">+</div>
+            </div>
+
+            <!-- Форма для загрузки аватара -->
+            <form action="{{ url_for('upload_avatar') }}" method="POST" enctype="multipart/form-data" id="avatar-form">
+                <input type="file" name="avatar" accept="image/*" id="avatar-input" style="display: none;">
+            </form>
+
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Ім'я користувача:</strong> {{ user.username }}</p>
+
+            <!-- Форма смены пароля -->
+            <form action="{{ url_for('change_password') }}" method="POST" class="password-form">
+                <h3>Змінити пароль</h3>
+                <input type="password" name="new_password" placeholder="Новий пароль" required>
+                <button type="submit" class="submit-btn">Змінити</button>
+            </form>
+        </div>
+
+        <div class="goals-section">
+            <div class="section-header">
+                <h2>Мої цілі та бюджети</h2>
+                <button id="add-goal-btn" class="add-btn">+ Додати ціль</button>
+            </div>
+            <div class="goals-list" id="goals-list"></div>
+
+                <!-- Список целей будет загружен через JavaScript -->
+            </div>
+
+            <!-- Форма добавления новой цели -->
+            <div class="add-goal-form" id="add-goal-form" style="display: none;">
+                <input type="text" id="goal-name" placeholder="Назва цілі" required>
+                <input type="number" id="goal-target" placeholder="Цільова сума" required>
+                <input type="date" id="goal-deadline">
+                <button id="save-goal-btn" class="submit-btn">Зберегти</button>
+                <button id="cancel-goal-btn" class="cancel-btn">Скасувати</button>
+            </div>
+        </div>
+
+                <div class="subscriptions-section">
+            <div class="section-header">
+                <h2>Мої підписки та борги</h2>
+                <div class="subscriptions-actions">
+                    <button id="add-subscription-btn" class="add-btn">+ Підписка</button>
+                    <button id="add-debt-btn" class="add-btn">+ Борг</button>
+                </div>
+            </div>
+
+            <div class="subscriptions-tabs">
+                <button class="tab-btn active" data-tab="subscriptions">Підписки</button>
+                <button class="tab-btn" data-tab="debts">Борги</button>
+            </div>
+
+            <!-- Контейнер для подписок -->
+            <div id="subscriptions-list" class="subscriptions-list"></div>
+
+            <!-- Контейнер для долгов (изначально скрыт) -->
+            <div id="debts-list" class="subscriptions-list" style="display: none;"></div>
+
+            <!-- Формы добавления -->
+            <div class="add-subscription-form" id="add-subscription-form" style="display: none;">
+                <input type="text" id="subscription-name" placeholder="Назва підписки" required>
+                <input type="number" id="subscription-amount" placeholder="Сума" required>
+                <input type="number" id="subscription-day" placeholder="День оплати (1-31)" min="1" max="31" required>
+                <button id="save-subscription-btn" class="submit-btn">Зберегти</button>
+                <button id="cancel-subscription-btn" class="cancel-btn">Скасувати</button>
+            </div>
+
+            <div class="add-debt-form" id="add-debt-form" style="display: none;">
+                <input type="text" id="debt-name" placeholder="Назва боргу" required>
+                <input type="number" id="debt-amount" placeholder="Сума" required>
+                <select id="debt-type">
+                    <option value="owed">Мені повинні</option>
+                    <option value="owing">Я повинен</option>
+                </select>
+                <input type="date" id="debt-due-date">
+                <button id="save-debt-btn" class="submit-btn">Зберегти</button>
+                <button id="cancel-debt-btn" class="cancel-btn">Скасувати</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='profile.js') }}"></script>
+</body>
+</html>

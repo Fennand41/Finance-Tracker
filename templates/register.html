@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-card">
+        <h2 class="section-title">Реєстрація</h2>
+        <form method="POST" class="transaction-form">
+            <div class="input-group">
+                <input type="email" name="email" placeholder="Email" required class="input-field">
+            </div>
+            <div class="input-group">
+                <input type="text" name="username" placeholder="Логін" required class="input-field">
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Пароль" required class="input-field">
+            </div>
+            <button type="submit" class="submit-btn">Зареєструватися</button>
+        </form>
+        <p class="helper">
+            Вже маєте акаунт?
+            <a href="{{ url_for('login') }}" class="profile-link">Увійти</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

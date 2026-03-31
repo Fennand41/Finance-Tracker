@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Фінансовий трекер{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Фін<strong class="blue">Трекер</strong></div>
+        {% if current_user.is_authenticated %}
+        <div class="nav-buttons">
+            <a href="{{ url_for('profile') }}" class="profile-btn">Профіль</a>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Вийти</a>
+        </div>
+        {% else %}
+        {% endif %}
+    </nav>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

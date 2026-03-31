@@ -1,0 +1,82 @@
+name: Lab 3 Pipeline
+
+on:
+  push:
+    branches: [ "lab-chapter1" ]
+
+jobs:
+  # ==========================================
+  # STAGE 1: Test
+  # ==========================================
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install Flask Flask-SQLAlchemy Flask-Login Flask-Bcrypt pytest
+      - name: Run unit test
+        run: pytest test.py
+
+  # ==========================================
+  # STAGE 2: Build
+  # ==========================================
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create simulated build artifact
+        run: echo "Це зібрана версія мого додатку v1.0" > build_artifact.txt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: build_artifact.txt
+
+  # ==========================================
+  # STAGE 3: Deploy to Staging (імітація розгортання)
+  # ==========================================
+  deploy_staging:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build
+      - name: Simulate Staging Deploy
+        run: |
+          echo "Розгортання на сервер Staging..."
+          cat build_artifact.txt  # Виводимо вміст артефакту як імітацію деплою
+
+  # ==========================================
+  # STAGE 4: Verify Staging (перевірка після деплою)
+  # ==========================================
+  verify_staging:
+    needs: deploy_staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Smoke Test
+        run: |
+          echo "Перевірка, чи Staging працює..."
+          python -c "assert 1 == 1, 'Smoke test failed'"  # Імітація успішного тесту
+
+  # ==========================================
+  # STAGE 5: Deploy to Production (потребує manual approval)
+  # ==========================================
+  deploy_production:
+    needs: verify_staging
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build
+      - name: Simulate Production Deploy
+        run: |
+          echo "🚀 ДЕПЛОЙ НА PRODUCTION УСПІШНИЙ!"
+          cat build_artifact.txt

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinRadar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo"><span class="blue">F</span>inRadar</div>
+        <div class="helper">Фінансовий помічник</div>
+        <a href="{{ url_for('profile') }}" class="profile-btn">Особистий кабінет</a>
+    </header>
+
+    <main class="container">
+        <h1>Фінансовий огляд</h1>
+
+        <section class="overview">
+            <div class="card income">
+                <p>Доходи</p>
+                <span class="amount" id="income-amount">0 грн</span>
+            </div>
+            <div class="card expense">
+                <p>Витрати</p>
+                <span class="amount" id="expense-amount">0 грн</span>
+            </div>
+            <div class="card balance">
+                <p>Баланс</p>
+                <span class="amount" id="balance-amount">0 грн</span>
+            </div>
+        </section>
+
+        <section class="actions">
+            <div class="add-transaction">
+                <h2>Додати операцію</h2>
+                <form id="transaction-form">
+                <div class="switch-buttons">
+                    <button type="button" id="income-btn" class="active">Дохід</button>
+                    <button type="button" id="expense-btn">Витрата</button>
+                    </div>
+                    <input type="number" id="amount" placeholder="Сума (₴)" required>
+                    <select id="category" required>
+                        <option value="">Оберіть категорію</option>
+                        <option value="Зарплата">Зарплата</option>
+                        <option value="Продукти">Продукти</option>
+                        <option value="Транспорт">Транспорт</option>
+                        <option value="Здоров'я">Здоров'я</option>
+                        <option value="Підробіток">Підробіток</option>
+                    </select>
+                    <input type="text" id="description" placeholder="Опис (необов'язково)">
+                    <button type="submit" class="add-btn button-style">Додати</button>
+                </form>
+            </div>
+
+            <div class="transaction-list-container">
+                <h2>Останні операції</h2>
+                <ul id="transaction-list"></ul>
+            </div>
+        </section>
+
+    <section class="category-analysis">
+    <h2>Аналіз категорій</h2>
+
+    <div class="analysis-container">
+        <!-- Левая колонка - фильтры -->
+        <div class="filters-column">
+            <div class="filter-group">
+                <label for="type-filter">Тип операцій:</label>
+                <select id="type-filter" class="filter-select">
+                    <option value="income">Доходи</option>
+                    <option value="expense">Витрати</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Категорії:</label>
+                <div class="category-checkboxes">
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="all" checked>
+                        <span>Всі категорії</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="Зарплата">
+                        <span>Зарплата</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="Продукти">
+                        <span>Продукти</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="Транспорт">
+                        <span>Транспорт</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="Здоров'я">
+                        <span>Здоров'я</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="Підробіток">
+                        <span>Підробіток</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-group date-filters">
+                <label>Період:</label>
+                <div class="date-inputs">
+                    <div class="date-input">
+                        <label for="start-date-chart">Від:</label>
+                        <input type="date" id="start-date-chart" class="filter-select">
+                    </div>
+                    <div class="date-input">
+                        <label for="end-date-chart">До:</label>
+                        <input type="date" id="end-date-chart" class="filter-select">
+                    </div>
+                </div>
+            </div>
+
+            <button id="apply-filters" class="button-style">Застосувати</button>
+        </div>
+
+        <!-- Правая колонка - график -->
+        <div class="chart-column">
+            <canvas id="category-chart" width="400" height="400"></canvas>
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
