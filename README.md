@@ -38,6 +38,7 @@ Start the Flask development server. The local SQLite database (transactions.db) 
 python main.py
 ```
 Open your web browser and navigate to: http://127.0.0.1:5000/
+
 🧪 Running Tests
 
 This project uses pytest for basic unit testing (checking routes and authentication blocks).
